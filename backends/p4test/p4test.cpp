@@ -128,6 +128,12 @@ int main(int argc, char *const argv[]) {
         }
     } else {
         program = P4::parseP4File(options);
+        
+        // dump IR after immediately after parsing
+        if (program != nullptr && ::errorCount() == 0 && options.parseOnly && options.dumpJsonFile != nullptr) {
+            JSONGenerator(*openFile(options.dumpJsonFile, true), true) << program << std::endl;
+            return 0;
+        }
 
         if (program != nullptr && ::errorCount() == 0) {
             P4::P4COptionPragmaParser optionsPragmaParser;
